@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+    <% include ../partials/head %>
+
+<body class="container">
+    <% include ../partials/header %>
+    <h3 id="bankaccount_title">BankAccount: </h3>
+
+    <div id="bankaccount"></div>
+
+
+    <script>
+        
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                            .exec(window.location.search);
+
+            return (results !== null) ? results[1] || 0 : false;
+        }
+
+        var number = $.urlParam("number");
+        $("#bankaccount_title").append(number);
+        
+        function GetBankaccount(number) {
+            $.ajax({
+                url: "/api/bankaccount/" + number,
+                type: "GET",
+                contentType: "application/json",
+                success: function (bankaccount) {
+                    console.log(bankaccount)
+                    if (JSON.stringify(bankaccount) == "null" ){
+                        $("#bankaccount").append( `<div class="alert alert-danger" role="alert">Bankaccount does not exist</div>`);    
+                    }
+                    else {
+                        $("#bankaccount").append(CreateTemplate(bankaccount));
+
+                    }
+                 }
+            });
+        }
+
+
+        function CreateTemplate(bankaccount){
+            let template ="";
+
+            template = `<div class="card w-100">
+                                <p class="card-text">
+                                        Number: `+bankaccount.number+`<br\>
+                                        Currency: `+bankaccount.currency+`<br\>
+                                        Accountbalance: `+bankaccount.accountbalance+`<br\>
+                                </p>
+                            </div>
+                        </div>
+                        <br/>`;
+                        
+            return template;
+        }
+
+        GetBankaccount(number);
+        
+    </script>
+</body>
+

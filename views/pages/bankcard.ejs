@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+    <% include ../partials/head %>
+
+<body class="container">
+    <% include ../partials/header %>
+    <h3 id="bankcard_title">BankCard: </h3>
+
+    <div id="bankcard"></div>
+
+
+    <script>
+        
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                            .exec(window.location.search);
+
+            return (results !== null) ? results[1] || 0 : false;
+        }
+
+        var cardnumber = $.urlParam("cardnumber");
+        $("#bankcard_title").append(cardnumber);
+        
+        function GetBankcard(cardnumber) {
+            $.ajax({
+                url: "/api/bankcard/" + cardnumber,
+                type: "GET",
+                contentType: "application/json",
+                success: function (bankcard) {
+                    if (JSON.stringify(bankcard) == "null" ){
+                        $("#bankcard").append( `<div class="alert alert-danger" role="alert">Bankcard does not exist</div>`);    
+                    }
+                    else {
+                        $("#bankcard").append(CreateTemplate(bankcard));
+
+                    }
+                 }
+            });
+        }
+
+
+        function CreateTemplate(bankcard){
+            let template ="";
+
+            template = `<div class="card w-100">
+                                <p class="card-text">
+                                    Cardnumber: `+bankcard.cardnumber+`<br\>
+                                    Expirationdate: `+bankcard.expirationdate+`<br\>
+                                    Currency: `+bankcard.currency+`<br\>
+                                    Cardbalance: `+bankcard.cardbalance+`<br\>
+                                </p>
+                            </div>
+                        </div>
+                        <br/>`;
+                        
+            return template;
+        }
+
+        GetBankcard(cardnumber);
+        
+    </script>
+</body>
+

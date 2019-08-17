@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<% include ../partials/head %>
+
+<body class="container">
+    <% include ../partials/header %>
+    <div>
+        <h3>You can upload xml-file here:</h3>
+
+        <% if (success){ %> 
+            <div id="probablySuccessfullImport" class="alert alert-primary" role="alert" >
+                    File imported in db... probably
+            </div>
+        <% }%>
+        
+        <form name="import-form"action="/api/import" method="post" enctype="multipart/form-data">
+            <div class="input-group">
+                    <div class="custom-file">
+                        <input name="filetoimport" type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                        <label id="select_file" class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-dark" type="submit" id="inputGroupFileAddon04" disabled=true >Import</button>
+                    </div>
+            </div>
+        </form>
+        
+    </div>
+
+    <script>
+        $('#inputGroupFile04').change(function() {
+            var filename = $('#inputGroupFile04').val();
+            if (filename.substring(3,11) == 'fakepath') {
+                filename = filename.substring(12);
+            } // Remove c:\fake at beginning from localhost chrome
+            $('#select_file').html(filename);
+            if  (filename.length >0) { 
+                $('#inputGroupFileAddon04').prop('disabled', false)
+            }
+            else {
+                $('#inputGroupFileAddon04').prop('disabled', true)
+            }
+       });
+    </script>
+</body>

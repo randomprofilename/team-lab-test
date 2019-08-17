@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Clients: Name, Surname, DateOfBirth, Cards, Accounts -->
+<database>
+  <client>
+    <name>Ivan</name>
+    <surname>Ivanov</surname>
+    <!-- YYYY-MM-DD -->
+    <dateofbirth>1990-09-20</dateofbirth>
+    <adress>Tomsk, Uchebnaya 11, d.5</adress>
+    <passport>5454705461</passport>
+    <cards>
+    <!-- 12 digits -->
+      <card>123456789002</card>
+    </cards>
+    <accounts>
+    <!-- 16 digits -->
+      <account>9876543210000001 </account>
+      <account>9876543210000005 </account> 
+    </accounts>
+
+  </client>
+    <client>
+    <name>Stepan</name>
+    <surname>Stepanov</surname>
+    <!-- YYYY-MM-DD -->
+    <dateofbirth>1960-02-01</dateofbirth>
+    <adress>Tomsk, Kirova 10</adress>
+    <passport>468463138</passport>
+    <cards>
+    <!-- 12 digits -->
+      
+      <card>456132165165</card>
+    </cards>
+    <accounts>
+    <!-- 16 digits -->
+      <account>9876543210000222 </account> 
+    </accounts>
+  </client>
+
+  <client>
+    <name>Maxim</name>
+    <surname>Maximov</surname>
+    <!-- YYYY-MM-DD -->
+    <dateofbirth>1985-03-05</dateofbirth>
+    <adress>Tomsk, Uchebnaya 11, d.5</adress>
+    <passport>5454705461</passport>
+    <cards>
+          <card>123456789082</card>
+    </cards>
+  </client>
+  <!-- BankCards: Cardnumber, ExpirationDate, Currency, CardBalance -->
+
+  <bankcard>
+      <cardnumber>123456789002</cardnumber>
+      <expirationdate>2022-01-01 </expirationdate>
+      <currency>Euro</currency>
+      <cardbalance>12345</cardbalance>
+  </bankcard>
+
+  <bankcard>
+      <cardnumber>456132165165</cardnumber>
+      <expirationdate>2018-11-05 </expirationdate>
+      <currency>Rubbles</currency>
+      <cardbalance>300</cardbalance>
+  </bankcard>
+
+  <bankcard>
+      <cardnumber>123456789082</cardnumber>
+      <expirationdate>2019-06-08 </expirationdate>
+      <currency>USD</currency>
+      <cardbalance>600</cardbalance>
+  </bankcard>
+
+
+  <!-- BankAccounts: Number, Currency, AccountBalance -->
+
+  <bankaccount>
+        <number>9876543210000001</number>
+        <currency>USD</currency>
+        <accountbalance>10000</accountbalance>
+  </bankaccount>
+
+  <bankaccount>
+          <number>9876543210000005</number>
+          <currency>Euro</currency>
+          <accountbalance>700000</accountbalance>
+  </bankaccount>
+
+  <bankaccount>
+          <number>9876543210000222</number>
+          <currency>AUD</currency>
+          <accountbalance>24232</accountbalance>
+  </bankaccount>
+
+
+  
+</database>

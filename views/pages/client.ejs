@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+    <% include ../partials/head %>
+
+<body class="container">
+    <% include ../partials/header %>
+    <h3 id="clients_title">Client: </h3>
+
+    <div id="client"></div>
+
+
+    <script>
+        
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                            .exec(window.location.search);
+
+            return (results !== null) ? results[1] || 0 : false;
+        }
+
+        var id = $.urlParam("id");
+        $("#clients_title").append(id);
+        
+        function GetClient(id) {
+            $.ajax({
+                url: "/api/client/" + id,
+                type: "GET",
+                contentType: "application/json",
+                success: function (client) {
+                    if (JSON.stringify(client) == "null" ){
+                        $("#client").append( `<div class="alert alert-danger" role="alert">Client does not exist</div>`);    
+                    }
+                    else {
+                        $("#client").append(CreateTemplate(client));
+
+                    }
+                 }
+            });
+        }
+
+        function CreateTemplate(client){
+            let template = "";
+            template += ClientInfoTemplate(client);
+            template += "<br/>";
+            template += ClientCardsTemplate(client);
+            template += "<br/>";
+            template += ClientAccountsTemplate(client);
+            template += "<br/>";
+            return template;
+        }
+
+        function ClientInfoTemplate(client){
+            let template ="";
+
+            template = `<div class="card w-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    ` + client.name+ " " + client.surname + `
+                                </h5>
+                                <p class="card-text">
+                                    Date of birth: `+client.dateofbirth+`<br\>
+                                    Adress: `+client.adress+`<br\>
+                                    Passport: `+client.passport+`<br\>
+                                    Client since: `+client.createdAt+`<br\>
+                                    Last Update: `+client.updatedAt+`<br\>
+                                </p>
+                            </div>
+                        </div>
+                        <br/>`;
+            return template;
+        }
+
+        function ClientCardsTemplate(client){
+            let template ="";
+            $.ajax({
+                url: "/api/client/" + id +"/bankcards",
+                type: "GET",
+                contentType: "application/json",
+                async: false,
+                success: function (bankcards) {
+                    if (bankcards.length>0 ){
+                        let bankcardsurls = '';
+                        $.each(bankcards, function(index,bankcard) {
+                            bankcardsurls += `<a href=/bankcard?cardnumber=`+ bankcard.cardnumber+ `>`+ bankcard.cardnumber+ `</a>`
+                        })
+                        template = `<div class="card w-100">
+                                    <h3> BankCards:</h3>
+                                    `+ bankcardsurls+`
+                                    </div>`
+                    }
+                    else {
+                        template = `<div class="alert alert-danger" role="alert">Have not bankcards</div>`;
+                    }
+                 }
+            })
+            return template;
+        }
+
+        function ClientAccountsTemplate(client){
+            let template ="";
+            $.ajax({
+                url: "/api/client/" + id +"/bankaccounts",
+                type: "GET",
+                contentType: "application/json",
+                async: false,
+                success: function (bankaccounts) {
+
+                    if (bankaccounts.length>0 ){
+                        let bankaccountsurls = '';
+                        $.each(bankaccounts, function(index,bankaccount) {
+                            bankaccountsurls += `<a href=/bankaccount?number=`+ bankaccount.number+ `>`+ bankaccount.number+ `</a>`
+                        })
+                        
+                        template = `<div class="card w-100">
+                                    <h3> BankAccounts:</h3>
+                                    `+ bankaccountsurls+`
+                                    </div>`
+                    }
+                    else {
+                        template = `<div class="alert alert-danger" role="alert">Have not bankaccounts</div>`;
+                    }
+                 }
+            })
+            return template;
+        }
+
+        GetClient(id);
+        
+    </script>
+</body>
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+    <% include ../partials/head %>
+
+<body class="container">
+    <% include ../partials/header %>
+    <div>
+        <h3>Records in database:</h3>
+        <br/>
+        <div id="clients"></div>
+    </div>
+    <script>
+        function GetClients() {
+            $.ajax({
+                url: "/api/clients",
+                type: "GET",
+                contentType: "application/json",
+                success: function (clients) {
+                    ShowUsers(clients);
+                 }
+            });
+        }
+        
+        function ShowUsers(clients) {
+            var clientsCards = "";
+            console.log(clients.length );
+            if (clients.length > 0 ){
+                clientsCards = CreateTemplate(clients);
+            }
+            else {
+                clientsCards += `<div class="alert alert-danger" role="alert">
+                                Database empty or broken. Try to <a href="/import/">import<a>
+                                </div>`;
+            }
+            $("#clients").append(clientsCards);
+        }
+        
+        function CreateTemplate(clients) {
+            var template="";
+            $.each(clients, function(index,client) {
+                var clientCard =    `<div class="card w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <a href = "/client?id=`+ client.id + `" >` + client.name+ " " + client.surname + `</a>
+                                            </h5>
+                                            <p class="card-text">
+                                                Date of birth: `+client.dateofbirth+`<br\>
+                                                Adress: `+client.adress+`<br\>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <br/>`;
+                template += (clientCard);
+            })
+            return template;
+        }
+
+        GetClients();
+    </script>
+</body>
